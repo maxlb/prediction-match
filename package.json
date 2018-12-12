@@ -1,0 +1,27 @@
+{
+  "name": "prediction-match",
+  "version": "1.0.0",
+  "description": "give predication fot next matches",
+  "main": "apiPredicition.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxlb/prediction-match.git"
+  },
+  "keywords": [
+    "api",
+    "rest"
+  ],
+  "author": "Maxime LE BAIL",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxlb/prediction-match/issues"
+  },
+  "homepage": "https://github.com/maxlb/prediction-match#readme"
+}
