@@ -4,7 +4,7 @@ var getMatchs = require('./getMatchs');
 
 // Nous définissons ici les paramètres du serveur.
 var hostname = 'localhost'; 
-var port = 3000; 
+var port = 80; 
  
 var app = express();  
 var myRouter = express.Router(); 
