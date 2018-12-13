@@ -8,6 +8,9 @@ var myRouter = express.Router();
  
 // Router
 myRouter.route('/').get(function(req,res){ 
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+	
 	var html = " 																				\
 	<style type=\"text/css\">																	\
 		body{ font-family: sans-serif; }														\
