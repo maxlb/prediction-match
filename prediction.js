@@ -1,37 +1,33 @@
+var request = require('request');
 
-var getPredictions = function() {
-    var predictions = [];
-    // Appel API Alexandre
-
-    predictions = [
-        {
-            "matchId": 0,
-            "teamLoc": 0,
-            "teamVis": 1,
-            "predictions": {
-                vis:[20.2, 30.2, 32.2, 9.3, 5.8, 2.3],
-                loc:[20.2, 30.2, 32.2, 9.3, 5.8, 2.3]
-            }
-        }
-    ];
-    return predictions;
+var errHandler = function(err) {
+    console.log(err);
 };
 
-var getPredictionByMatchId = function() {
-    var prediction = {};
-    // Appel API Alexandre
-
-    prediction = {
-            "matchId": 0,
-            "teamLoc": 0,
-            "teamVis": 1,
-            "predictions": {
-                vis:[20.2, 30.2, 32.2, 9.3, 5.8, 2.3],
-                loc:[20.2, 30.2, 32.2, 9.3, 5.8, 2.3]
+function getURL(url) {
+    return new Promise(function (resolve, reject) {
+        request.get(url, function (err, resp, body) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(body);
             }
-        };
-    return prediction;
+        })
+    });
+}
+
+var getPredictionByMatchId = function(id) {
+
+    // Appel API Alexandre
+    return new Promise(function (resolve, reject) {
+        var url_pre = 'https://football-predictions-228216.appspot.com/api/match/';
+        var url_suf = '/predictions';
+    
+        getURL(url_pre + id + url_suf)
+            .then(JSON.parse, errHandler)
+            .then(function(result) { resolve(result); }, errHandler);
+    });
+    
 };
 
-exports.getPredictions = getPredictions;
 exports.getPredictionByMatchId = getPredictionByMatchId;

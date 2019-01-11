@@ -28,15 +28,30 @@ myRouter.route('/').get(function(req,res){
 myRouter.route('/prediction').get(function(req,res){ 
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-	var obj = utils.computeAllPredMatch();
-	res.json(obj);
+	
+	try {
+		utils.computeAllPredMatch()
+			.then(function(obj){
+				res.json(obj);
+			});
+	} catch(err){
+		res.json(err);
+	}
+	
 });
 
 myRouter.route('/prediction/:id').get(function(req,res){ 
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-	var obj = utils.computePredMatchByMatchId(req.params.id);
-	res.json(obj);
+
+	try {
+		utils.computePredMatchByMatchId(req.params.id)
+			.then(function(obj){
+				res.json(obj);
+			});
+	} catch(err){
+		res.json(err);
+	}
 });
 
 app.use(myRouter); 

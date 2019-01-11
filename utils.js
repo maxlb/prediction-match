@@ -1,49 +1,68 @@
 var match = require('./match');
 var prediction = require('./prediction');
 
+var errHandler = function(err) {
+    console.log(err);
+};
 
 var computeAllPredMatch = function(){
-    var obj = [];
-    
-    match.getLastMatchs().forEach(mat => {
-        var pred = prediction.getPredictionByMatchId(mat.id);
+    return new Promise(function (resolve, reject) {
+        var obj = [];
 
-        var predMatch = {}
-        predMatch.matchId = mat.id;
-        predMatch.date = mat.date;
-        predMatch.heure = mat.heure;
-        predMatch.name = mat.name;
-        predMatch.equipeDomicile = {};
-        predMatch.equipeDomicile.name = mat.equipeDomicile;
-        predMatch.equipeDomicile.prob = pred.predictions.loc;
-        predMatch.equipeExterieure = {};
-        predMatch.equipeExterieure.name = mat.equipeExterieure;
-        predMatch.equipeExterieure.prob = pred.predictions.vis;
+        var mats = match.getLastMatchs();
+
+        mats.forEach(mat => {
+            try {
+                computePredMatchByMatchId(mat.id)
+                    .then(function(predMatch){
+                        
+                        if(!predMatch.message){
+                            obj.push(predMatch);
+                        } else {
+                            errHandler('Pas de prediction pour le match ' + mat.id);
+                        }
+
+                    })
+            } catch (error) {
+                errHandler(error);
+            }
+        });
         
-        obj.push(predMatch);
+        resolve(obj);
     });
-
-    return obj;
 }
 
 var computePredMatchByMatchId = function(id){
+    return new Promise(function (resolve, reject) {
+        var mat = match.getLastMatchById(id);
 
-    var mat = match.getLastMatchById(id);
-    var pred = prediction.getPredictionByMatchId(id);
-
-    var predMatch = {}
-    predMatch.matchId = mat.id;
-    predMatch.date = mat.date;
-    predMatch.heure = mat.heure;
-    predMatch.name = mat.name;
-    predMatch.equipeDomicile = {};
-    predMatch.equipeDomicile.name = mat.equipeDomicile;
-    predMatch.equipeDomicile.prob = pred.predictions.loc;
-    predMatch.equipeExterieure = {};
-    predMatch.equipeExterieure.name = mat.equipeExterieure;
-    predMatch.equipeExterieure.prob = pred.predictions.vis;
-
-    return predMatch;
+        try {
+            prediction.getPredictionByMatchId(id)
+                .then(function(pred){
+                    
+                    if(pred.message){
+                        resolve(pred);
+                    } else {
+                        var predMatch = {}
+                        predMatch.matchId = mat.id;
+                        predMatch.date = mat.date;
+                        predMatch.heure = mat.heure;
+                        predMatch.name = mat.name;
+                        predMatch.equipeDomicile = {};
+                        predMatch.equipeDomicile.name = mat.equipeDomicile;
+                        predMatch.equipeDomicile.prob = pred.predictions.loc;
+                        predMatch.equipeExterieure = {};
+                        predMatch.equipeExterieure.name = mat.equipeExterieure;
+                        predMatch.equipeExterieure.prob = pred.predictions.vis;
+                        resolve(predMatch);
+                    }
+                    
+                })
+        } catch (error) {
+            reject(error);
+        }
+        
+    });
 }
 
 exports.computeAllPredMatch = computeAllPredMatch;
