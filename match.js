@@ -10,7 +10,7 @@ var matchs = [
         "id": 1,
         "date": "17/01/2019",
         "teamHome": "Chelsea",
-        "teamAway": "Manchester United",
+        "teamAway": "Liverpool",
         "heure": "19:30"
     },
     {
@@ -19,7 +19,7 @@ var matchs = [
         "teamHome": "Burnley",
         "teamAway": "Arsenal",
         "heure": "20:00"
-    },
+    }
 ];
 
 var getLastMatchs = function() {

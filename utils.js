@@ -20,6 +20,7 @@ var computeAllPredMatch = function(){
                                     
                                     if(!predMatch.message){
                                         obj.push(predMatch);
+                                        
                                     } else {
                                         errHandler('Pas de prediction pour le match ' + mat.id);
                                     }
@@ -30,12 +31,17 @@ var computeAllPredMatch = function(){
                         }
                     });
 
-                })
+                });
+            console.log(obj);
         } catch (error) {
             errHandler(error);
         }
 
-        resolve(obj);
+        setTimeout(function(){
+            resolve(obj);
+        }, 2000);
+        
+        
     });
 }
 
