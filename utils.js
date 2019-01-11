@@ -5,44 +5,32 @@ var errHandler = function(err) {
     console.log(err);
 };
 
-var computeAllPredMatch = function(){
-    return new Promise(function (resolve, reject) {
-        var obj = [];
-
+async function getMatchsWithPred(matchs){
+    var obj = [];
+    for (let i = 0 ; i < matchs.length ; i++) {
         try {
-            match.getLastMatchs()
-                .then(function(matchs){
-
-                    matchs.forEach(mat => {
-                        try {
-                            computePredMatchByMatchId(mat.id)
-                                .then(function(predMatch){
-                                    
-                                    if(!predMatch.message){
-                                        obj.push(predMatch);
-                                        
-                                    } else {
-                                        errHandler('Pas de prediction pour le match ' + mat.id);
-                                    }
-            
-                                })
-                        } catch (error) {
-                            errHandler(error);
-                        }
-                    });
-
-                });
-            console.log(obj);
+            var pred = await computePredMatchByMatchId(matchs[i].id);
+            if(!pred.message){
+                obj.push(pred);
+            } else {
+                errHandler('Pas de prediction pour le match ' + matchs[i].id);
+            }
         } catch (error) {
             errHandler(error);
         }
+    }
+    return obj;
+}
 
-        setTimeout(function(){
-            resolve(obj);
-        }, 2000);
-        
-        
-    });
+var computeAllPredMatch = async function(){
+    try {
+        var matchs = await match.getLastMatchs();
+        var matchsWithPred = await getMatchsWithPred(matchs);
+        return matchsWithPred;
+    } catch (error) {
+        errHandler(error);
+        return [];
+    }
 }
 
 var computePredMatchByMatchId = function(id){
