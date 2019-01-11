@@ -22,20 +22,16 @@ var matchs = [
     }
 ];
 
-var getLastMatchs = function() {
-    
-    return new Promise(function (resolve, reject) {
-        resolve(matchs)
-    });
-
+var getLastMatchs = async function() {
+    return matchs;
 };
 
-var getLastMatchById = function(id) {
-
-    return new Promise(function (resolve, reject) {
-        resolve(matchs[id])
-    });
-
+var getLastMatchById = async function(id) {
+    if(id < matchs.length) {
+        return matchs[id];
+    } else {
+        throw TypeError(`Le match séléctionné n'existe pas : ${id}.`);
+    }
 };
 
 exports.getLastMatchs = getLastMatchs;

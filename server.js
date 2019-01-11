@@ -25,33 +25,22 @@ myRouter.route('/').get(function(req,res){
 	res.send(html);
 });
 
-myRouter.route('/prediction').get(function(req,res){ 
+myRouter.route('/prediction').get(async function(req,res){ 
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
 	
-	try {
-		utils.computeAllPredMatch()
-			.then(function(obj){
-				res.json(obj);
-			});
-	} catch(err){
-		res.json(err);
-	}
-	
+	await utils.computeAllPredMatch()
+		.then(obj => res.json(obj))
+		.catch(err => res.json( {"error": err.message} ));
 });
 
-myRouter.route('/prediction/:id').get(function(req,res){ 
+myRouter.route('/prediction/:id').get(async function(req,res){ 
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
 
-	try {
-		utils.computePredMatchByMatchId(req.params.id)
-			.then(function(obj){
-				res.json(obj);
-			});
-	} catch(err){
-		res.json(err);
-	}
+	await utils.computePredMatchByMatchId(req.params.id)
+		.then(obj => res.json(obj))
+		.catch(err => res.json( {"error": err.message} ));
 });
 
 app.use(myRouter); 
@@ -67,5 +56,5 @@ const server = app.listen(8080, () => {
 	lhost = 'localhost';
   }
 
-  console.log(`Mon serveur fonctionne sur http://${lhost}:${port}`);
+  console.log(`Serveur lancé sur https://${lhost}:${port}`);
 });
