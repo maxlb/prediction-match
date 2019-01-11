@@ -1,43 +1,41 @@
+var matchs = [
+    {
+        "id": 0,
+        "date": "15/01/2019",
+        "teamHome": "Tottenham",
+        "teamAway": "Everton",
+        "heure": "21:30"
+    },
+    {
+        "id": 1,
+        "date": "17/01/2019",
+        "teamHome": "Chelsea",
+        "teamAway": "Manchester United",
+        "heure": "19:30"
+    },
+    {
+        "id": 2,
+        "date": "18/01/2019",
+        "teamHome": "Burnley",
+        "teamAway": "Arsenal",
+        "heure": "20:00"
+    },
+];
 
 var getLastMatchs = function() {
-    var matchs = [];
-    // Appel API Pierre
+    
+    return new Promise(function (resolve, reject) {
+        resolve(matchs)
+    });
 
-    matchs = [
-        {
-            "id": 1,
-            "date": "15/10/2018",
-            "equipeDomicile": "Tottenham",
-            "equipeExterieure": "Everton",
-            "heure": "21:30",
-            "name": "Barclay Première Ligue"
-        },
-        {
-            "id": 2,
-            "date": "15/10/2018",
-            "equipeDomicile": "Tottenham",
-            "equipeExterieure":"Everton",
-            "heure": "21:30",
-            "name": "Barclay Première Ligue"
-        }
-    ];
-    return matchs;
 };
 
-var getLastMatchById = function() {
-    var match = {};
-    // Appel API Pierre
+var getLastMatchById = function(id) {
 
-    match = {
-            "id": 2,
-            "date": "15/10/2018",
-            "equipeDomicile": "Tottenham",
-            "equipeExterieure": "Everton",
-            "heure": "21:30",
-            "name": "Barclay Première Ligue"
-        };
+    return new Promise(function (resolve, reject) {
+        resolve(matchs[id])
+    });
 
-    return match;
 };
 
 exports.getLastMatchs = getLastMatchs;
